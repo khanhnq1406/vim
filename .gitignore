@@ -1,0 +1,11 @@
+# Plugin data (auto-generated on first launch)
+plugin/
+lazy-lock.json
+
+# Neovim session/swap
+*.swp
+*.swo
+Session.vim
+
+# OS
+.DS_Store
