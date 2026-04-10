@@ -162,7 +162,11 @@ end, { desc = "Format document" })
 -- =====================
 map("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
 map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>", { desc = "Git blame line" })
-map("n", "<leader>gd", "<cmd>Gitsigns diffthis<cr>", { desc = "Git diff" })
+map("n", "<leader>gd", function()
+  vim.cmd("DiffviewOpen -- " .. vim.fn.expand("%"))
+end, { desc = "Git diff file" })
+map("n", "<leader>gs", "<cmd>DiffviewOpen<cr>", { desc = "Source control" })
+map("n", "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", { desc = "File history" })
 map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview hunk" })
 map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Reset hunk" })
 
