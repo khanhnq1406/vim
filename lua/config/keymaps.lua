@@ -83,8 +83,9 @@ map("n", "<C-e>", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
 -- Sidebar & Panels
 -- =====================
 
--- Toggle sidebar / file explorer (Ctrl+B like VSCode)
+-- Toggle sidebar / file explorer
 map("n", "<C-b>", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer" })
+map("n", "<leader>b", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer" })
 
 -- Focus file explorer (Ctrl+Shift+E like VSCode)
 map("n", "<C-S-e>", "<cmd>NvimTreeFocus<cr>", { desc = "Focus file explorer" })

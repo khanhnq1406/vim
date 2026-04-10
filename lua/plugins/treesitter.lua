@@ -1,55 +1,48 @@
 -- Syntax Highlighting (better than VSCode's TextMate grammars)
 return {
-  "nvim-treesitter/nvim-treesitter",
-  build = ":TSUpdate",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-  },
-  config = function()
-    require("nvim-treesitter.configs").setup({
-      ensure_installed = {
-        "lua",
-        "vim",
-        "vimdoc",
-        "javascript",
-        "typescript",
-        "tsx",
-        "html",
-        "css",
-        "scss",
-        "json",
-        "jsonc",
-        "yaml",
-        "toml",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "go",
-        "rust",
-        "bash",
-        "dockerfile",
-        "gitignore",
-        "regex",
-        "sql",
-        "graphql",
-      },
-      auto_install = true,
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-      indent = { enable = true },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
-          scope_incremental = false,
-          node_decremental = "<bs>",
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("nvim-treesitter").setup({
+        ensure_installed = {
+          "lua",
+          "vim",
+          "vimdoc",
+          "javascript",
+          "typescript",
+          "tsx",
+          "html",
+          "css",
+          "scss",
+          "json",
+          "jsonc",
+          "yaml",
+          "toml",
+          "markdown",
+          "markdown_inline",
+          "python",
+          "go",
+          "rust",
+          "bash",
+          "dockerfile",
+          "gitignore",
+          "regex",
+          "sql",
+          "graphql",
         },
-      },
-      textobjects = {
+        auto_install = true,
+      })
+
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("nvim-treesitter-textobjects").setup({
         select = {
           enable = true,
           lookahead = true,
@@ -74,7 +67,7 @@ return {
             ["[c"] = "@class.outer",
           },
         },
-      },
-    })
-  end,
+      })
+    end,
+  },
 }

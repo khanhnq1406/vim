@@ -43,45 +43,52 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       -- Diagnostic signs (like VSCode gutter icons)
-      local signs = { Error = " ", Warn = " ", Hint = "󰌵 ", Info = " " }
-      for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-      end
-
-      -- Diagnostic config (like VSCode inline errors)
       vim.diagnostic.config({
         virtual_text = {
           prefix = "●",
           spacing = 4,
         },
-        signs = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.HINT] = "󰌵 ",
+            [vim.diagnostic.severity.INFO] = " ",
+          },
+        },
         underline = true,
         update_in_insert = false,
         severity_sort = true,
         float = {
           border = "rounded",
-          source = "always",
         },
       })
 
-      -- Hover/signature borders
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+      -- LSP attach handler
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if not client then return end
 
-      -- Default on_attach
-      local on_attach = function(client, bufnr)
-        -- Enable inlay hints if supported (like VSCode)
-        if client.server_capabilities.inlayHintProvider then
-          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-        end
-      end
+          -- Enable inlay hints if supported (like VSCode)
+          if client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+          end
 
-      -- Setup servers
+          -- ESLint auto-fix on save
+          if client.name == "eslint" then
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = args.buf,
+              command = "EslintFixAll",
+            })
+          end
+        end,
+      })
+
+      -- Server configs
       local servers = {
         lua_ls = {
           settings = {
@@ -103,25 +110,15 @@ return {
         emmet_ls = {
           filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
         },
-        eslint = {
-          on_attach = function(client, bufnr)
-            on_attach(client, bufnr)
-            -- Auto-fix on save (like VSCode ESLint extension)
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              buffer = bufnr,
-              command = "EslintFixAll",
-            })
-          end,
-        },
+        eslint = {},
       }
 
       for server, config in pairs(servers) do
         config.capabilities = capabilities
-        if not config.on_attach then
-          config.on_attach = on_attach
-        end
-        lspconfig[server].setup(config)
+        vim.lsp.config(server, config)
       end
+
+      vim.lsp.enable(vim.tbl_keys(servers))
     end,
   },
 }
