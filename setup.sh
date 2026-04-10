@@ -8,7 +8,7 @@ echo "Setting up Neovim with VSCode-like configuration..."
 echo ""
 
 # Install Neovim
-if ! command -v nvim &> /dev/null; then
+if ! command -v nvim &>/dev/null; then
   echo "[1/5] Installing Neovim..."
   brew install neovim
 else
