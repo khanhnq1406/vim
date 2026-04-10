@@ -65,7 +65,7 @@ opt.foldlevelstart = 99
 
 -- Misc
 opt.confirm = true
-opt.fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "" }
+opt.fillchars = { eob = " ", fold = " ", foldsep = " " }
 opt.list = true
 opt.listchars = { tab = "  ", trail = "·", nbsp = "␣" }
 opt.shortmess:append("sI")
