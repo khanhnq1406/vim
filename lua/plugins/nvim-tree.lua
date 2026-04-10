@@ -20,6 +20,7 @@ return {
         root_folder_label = ":~:s?$?/..?",
         indent_markers = { enable = true },
         icons = {
+          diagnostics_placement = "before",
           glyphs = {
             default = "",
             symlink = "",
