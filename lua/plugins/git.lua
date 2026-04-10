@@ -64,4 +64,26 @@ return {
     "tpope/vim-fugitive",
     cmd = { "Git", "Gdiffsplit", "Gread", "Gwrite", "Ggrep" },
   },
+
+  -- Diffview: side-by-side diffs and source control panel
+  {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      enhanced_diff_hl = true,
+      use_icons = true,
+      view = {
+        default = { layout = "diff2_horizontal" },
+        file_history = { layout = "diff2_horizontal" },
+      },
+      file_panel = {
+        listing_style = "tree",
+        win_config = {
+          position = "left",
+          width = 35,
+        },
+      },
+    },
+  },
 }
