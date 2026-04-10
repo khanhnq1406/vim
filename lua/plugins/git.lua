@@ -45,24 +45,6 @@ return {
         map("n", "<leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
         map("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
         map("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
-
-        -- Click on gitsigns gutter to open diff
-        map("n", "<LeftRelease>", function()
-          local mousepos = vim.fn.getmousepos()
-          -- Only trigger on sign column clicks (screencol <= 4)
-          if mousepos.screencol > 4 then return end
-          -- Use gitsigns public API to check if line is in a hunk
-          local hunks = gs.get_hunks(bufnr)
-          if not hunks then return end
-          for _, hunk in ipairs(hunks) do
-            local start = hunk.added.start
-            local count = math.max(hunk.added.count, 1) -- delete hunks have count=0, sign appears at start line
-            if mousepos.line >= start and mousepos.line < start + count then
-              vim.cmd("DiffviewOpen -- " .. vim.fn.expand("%"))
-              return
-            end
-          end
-        end, "Open diff on gutter click")
       end,
     },
   },
